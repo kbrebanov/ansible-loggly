@@ -1,2 +1,50 @@
 ---
 # tasks file for loggly
+
+- name: Include distribution specific variables
+  include_vars: "{{ ansible_distribution }}.yml"
+  tags: loggly
+
+- include: CentOS.yml
+  when: ansible_distribution == "CentOS"
+  tags: loggly
+
+- include: Ubuntu.yml
+  when: ansible_distribution == "Ubuntu"
+  tags: loggly
+
+- name: Download Loggly certificate
+  get_url: >
+    url=https://logdog.loggly.com/media/loggly.com.crt
+    dest=/etc/rsyslog.d/keys/ca.d/loggly.com.crt
+    sha256sum=69559ef5e65be40abf939cc2ecb7380df3c6a7fa86386f02a1be395cad6afa6d
+    owner=root
+    group=root
+    mode=0644
+  tags: loggly
+
+- name: Download Starfield certificate
+  get_url: >
+    url=https://certs.starfieldtech.com/repository/sf_bundle.crt
+    dest=/etc/rsyslog.d/keys/ca.d/sf_bundle.crt
+    sha256sum=87d171b3333ca95a98aa02603fdb6508939c63f69e14c8587bd66c4f4df65032
+    owner=root
+    group=root
+    mode=0644
+  tags: loggly
+
+- name: Concatenate certificates
+  command: cat {sf_bundle.crt,loggly.com.crt} > loggly_full.crt
+    args:
+      chdir: /etc/rsyslog.d/keys/ca.d
+      creates: /etc/rsyslog.d/keys/ca.d/loggly_full.crt
+  tags: loggly
+
+- name: Create Loggly rsyslog configuration
+  template: >
+    src=22-loggly.conf.j2
+    dest=/etc/rsyslog.d/22-loggly.conf
+    owner=root
+    group=root
+    mode=0644
+  tags: loggly
