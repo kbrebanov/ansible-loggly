@@ -13,6 +13,24 @@
   when: ansible_distribution == "Ubuntu"
   tags: loggly
 
+- name: Create keys directory
+  file: >
+    path=/etc/rsyslog.d/keys
+    owner=root
+    group=root
+    mode=0755
+    state=directory
+  tags: loggly
+
+- name: Create keys/ca.d directory
+  file: >
+    path=/etc/rsyslog.d/keys/ca.d
+    owner=root
+    group=root
+    mode=0755
+    state=directory
+  tags: loggly
+
 - name: Download Loggly certificate
   get_url: >
     url=https://logdog.loggly.com/media/loggly.com.crt
