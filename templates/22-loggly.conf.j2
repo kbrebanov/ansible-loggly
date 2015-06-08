@@ -4,7 +4,7 @@
 ### RsyslogTemplate for Loggly ###
 ##########################################################
 
-$template LogglyFormat,"<%pri%>%protocol-version% %timestamp:::date-rfc3339% %HOSTNAME% %app-name% %procid% %msgid% [{{ loggly_token }}@41058 tag=\"RsyslogTLS\"] %msg%"
+$template LogglyFormat,"<%pri%>%protocol-version% %timestamp:::date-rfc3339% %HOSTNAME% %app-name% %procid% %msgid% [{{ loggly_token }}@41058 tag=\"{{ loggly_tag }}\"] %msg%"
 
 #RsyslogGnuTLS
 $DefaultNetstreamDriverCAFile /etc/rsyslog.d/keys/ca.d/loggly_full.crt

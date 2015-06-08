@@ -2,3 +2,4 @@
 # defaults file for loggly
 
 loggly_token: ""
+loggly_tag: ""
