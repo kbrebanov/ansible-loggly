@@ -35,9 +35,9 @@
 
 - name: Concatenate certificates
   command: cat {sf_bundle.crt,loggly.com.crt} > loggly_full.crt
-    args:
-      chdir: /etc/rsyslog.d/keys/ca.d
-      creates: /etc/rsyslog.d/keys/ca.d/loggly_full.crt
+  args:
+    chdir: /etc/rsyslog.d/keys/ca.d
+    creates: /etc/rsyslog.d/keys/ca.d/loggly_full.crt
   tags: loggly
 
 - name: Create Loggly rsyslog configuration
